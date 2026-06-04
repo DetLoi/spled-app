@@ -49,3 +49,26 @@
   padding: var(--spacing-m);
   text-align: center;
 }
+
+/* Entrance (stagger) */
+.række { animation: spled-indglid 260ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.liste .række:nth-child(1) { animation-delay: 25ms; }
+.liste .række:nth-child(2) { animation-delay: 50ms; }
+.liste .række:nth-child(3) { animation-delay: 75ms; }
+.liste .række:nth-child(4) { animation-delay: 100ms; }
+.liste .række:nth-child(5) { animation-delay: 125ms; }
+.liste .række:nth-child(6) { animation-delay: 150ms; }
+.liste .række:nth-child(7) { animation-delay: 175ms; }
+.liste .række:nth-child(8) { animation-delay: 200ms; }
+.liste .række:nth-child(9) { animation-delay: 225ms; }
+.liste .række:nth-child(10) { animation-delay: 250ms; }
+
+/* Lokale keyframes (CSS-modules scoper referencen, så de SKAL defineres her). */
+@keyframes spled-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes spled-indglid {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
