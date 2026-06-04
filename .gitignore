@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Miljøvariabler (feedback-nøgler m.m.) — commit ALDRIG
+.env
+.env.*
+!.env.example
