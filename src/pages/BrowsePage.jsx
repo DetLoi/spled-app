@@ -20,6 +20,10 @@ import TemaLinser from '../components/browse/TemaLinser/TemaLinser.jsx'
 import FagTrae from '../components/browse/FagTrae/FagTrae.jsx'
 import styles from './BrowsePage.module.css'
 
+// Synligt build-/versionsnummer (bump ved hver ny deploy, så man kan se på
+// telefonen at den opdaterede version faktisk er landet — slår PWA-cache-tvivl).
+const APP_VERSION = 'v0.1.1'
+
 export default function BrowsePage() {
   const navigate = useNavigate()
   const { setUdvalgteIds } = useFilter()
@@ -64,7 +68,7 @@ export default function BrowsePage() {
       <div className={styles.indhold}>
         <header className={styles.appHoved}>
           <h1 className={styles.appTitel}>SplEd</h1>
-          <span className={styles.appUndertitel}>{alleKort.length} kort i basen</span>
+          <span className={styles.appUndertitel}>{APP_VERSION} · {alleKort.length} kort</span>
         </header>
 
         <SearchBar værdi={søgeord} onÆndring={setSøgeord} onRyd={() => setSøgeord('')} />

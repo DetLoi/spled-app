@@ -35,17 +35,19 @@ export function useSwipeFeed({ grupperetKort, filterSleutel, startId, animatingK
   const nKortIUdvalg = gruppe?.kort?.length ?? 0
   const aktivtKort = grupperetKort[emneIndex]?.kort?.[kortIndex] ?? null
 
-  // Nulstil/klamp position i RENDER-fasen (React anbefaler dette frem for at
-  // sætte state i en effekt — undgår cascading renders).
-  const [prevSleutel, setPrevSleutel] = useState(filterSleutel)
-  if (prevSleutel !== filterSleutel) {
-    setPrevSleutel(filterSleutel)
+  // Nulstil position når udvalget skifter, og klamp hvis udvalget er blevet
+  // mindre. Bevidst i EFFEKTER (dette mønster kørte stabilt; et render-fase-
+  // eksperiment crashede på mobil ved lodret swipe).
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
     setEmneIndex(0)
     setKortIndex(0)
-  } else {
-    const klampetEmne = nEmner === 0 ? 0 : Math.min(emneIndex, nEmner - 1)
-    if (klampetEmne !== emneIndex) setEmneIndex(klampetEmne)
-  }
+  }, [filterSleutel])
+
+  useEffect(() => {
+    setEmneIndex((i) => (nEmner === 0 ? 0 : Math.min(i, nEmner - 1)))
+  }, [grupperetKort, nEmner])
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Land på et bestemt kort når man kommer fra en samlings-oversigt (startId).
   useEffect(() => {
