@@ -151,9 +151,6 @@ export function byggTemaer(kort) {
 export const LINSER = [
   { id: 'kerne', label: 'Kerne', tegn: '★', predikat: (k) => k.kerne_atom === true },
   { id: 'kritisk', label: 'Klinisk-kritiske', tegn: '⚠', predikat: (k) => k.klinisk_sikkerhed_kritisk === true },
-  { id: 'visuelle', label: 'Visuelle', tegn: '▦', predikat: (k) => k.visuel_anbefalet === true },
-  { id: 'svaer', label: 'Svære (grad 3–4)', tegn: '▲', predikat: (k) => (k.sværhedsgrad ?? 0) >= 3 },
-  { id: 'let', label: 'Lette (grad 1)', tegn: '○', predikat: (k) => k.sværhedsgrad === 1 },
 ]
 
 export function tælLinser(kort) {
