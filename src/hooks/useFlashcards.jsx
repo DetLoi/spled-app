@@ -21,6 +21,10 @@ function mapAtomTilKort(atom) {
         .join(' · ')
     : 'Kilde ikke angivet'
 
+  // Kapitel-streng fra kilden, fx "Kapitel 2: Kredsløbet". Bruges af BrowsePage
+  // til fag→kapitel→emne-drilldown. Falder tilbage hvis kilden mangler kapitel.
+  const kapitelStreng = k0?.kapitel || 'Uden kapitel'
+
   return {
     id: atom.id,
     // Forside vises på kortet. FeedPage.kortForNiveau bruger
@@ -54,6 +58,12 @@ function mapAtomTilKort(atom) {
       typeof atom.pædagogisk_orden_i_emne === 'number'
         ? atom.pædagogisk_orden_i_emne
         : 9999,
+    // --- Berigede dimensioner (#1) — bevares fra atomet så BrowsePage kan
+    //     navigere/filtrere på dem. Tidligere blev disse droppet på kortet.
+    kapitel: kapitelStreng,
+    sværhedsgrad: typeof atom.sværhedsgrad === 'number' ? atom.sværhedsgrad : null,
+    tværgående_tema: Array.isArray(atom.tværgående_tema) ? atom.tværgående_tema : [],
+    visuel_anbefalet: atom?.visuel?.anbefalet === true,
     nøgleord: atom.nøgleord || [],
     dummy: false,
   }

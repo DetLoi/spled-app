@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import DummyBadge from '../DummyBadge/DummyBadge.jsx'
 import styles from './Flashcard.module.css'
+import { sendFeedback, getVote } from '../../lib/feedback.js'
 
 // Lille markdown-renderer der dækker mønstrene vi faktisk har i svar_faglig:
 // **bold**, *italic*, bulleted lister (- / *), nummererede lister (1.) og
@@ -108,6 +109,7 @@ export default function Flashcard({ kort }) {
   const [vendt, setVendt] = useState(false)
   const [vistBagside, setVistBagside] = useState(kort.bagside)
   const [svarTransition, setSvarTransition] = useState('')
+  const [stemme, setStemme] = useState(() => getVote(kort.id))
   const transitionTimeouts = useRef({ ud: null, ind: null })
 
   const fagKlasse = FAG_KLASSER[kort.fag] || ''
@@ -140,6 +142,15 @@ export default function Flashcard({ kort }) {
     setVistBagside(kort.bagside)
     setSvarTransition('')
   }, [kort.id])
+
+  useEffect(() => { setStemme(getVote(kort.id)) }, [kort.id])
+
+  function haandterStemme(e, vote) {
+    e.stopPropagation()
+    const ny = stemme === vote ? null : vote
+    setStemme(ny)
+    if (ny) sendFeedback({ atomId: kort.id, niveau: kort._niveau || 'faglig', vote: ny, begreb: kort.begreb || kort.emne || '', fag: kort.fag || '' })
+  }
 
   function haandterFlip() {
     setVendt((v) => !v)
@@ -211,6 +222,15 @@ export default function Flashcard({ kort }) {
               <FlipIkon />
               Tap for spørgsmål
             </span>
+            <div className={styles.feedback} onClick={(e) => e.stopPropagation()}>
+              <span className={styles.feedbackLabel}>Nyttigt?</span>
+              <button type="button" aria-label="Nyttigt" aria-pressed={stemme === 'up'}
+                className={`${styles.fbKnap} ${stemme === 'up' ? styles.fbOp : ''}`}
+                onClick={(e) => haandterStemme(e, 'up')}>👍</button>
+              <button type="button" aria-label="Ikke nyttigt" aria-pressed={stemme === 'down'}
+                className={`${styles.fbKnap} ${stemme === 'down' ? styles.fbNed : ''}`}
+                onClick={(e) => haandterStemme(e, 'down')}>👎</button>
+            </div>
           </footer>
         </div>
       </div>

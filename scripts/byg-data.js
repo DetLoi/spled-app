@@ -53,6 +53,12 @@ if (!existsSync(SPLED_DATA)) {
   process.exit(1)
 }
 
+// App-bundtet er offentligt → strip admin-/provenance-felter (bl.a. ordrette lærebogscitater).
+// Den FULDE data (med citater) bevares uændret i spled-data til admin/QA.
+const STRIP_FELTER = new Set(['kilde_tekstgrundlag','faktagrundlag','ekstraktions_note','atomiserings_note','version_historik','viden_opdatering','speciale_forslag','kilde_sikkerhed','ekstraktions_kvalitet','verificer_mod_bog','validator_prioritet','tvivl_flag','dublet_reference'])
+function appSikker(a) { const ud = {}; for (const k of Object.keys(a)) if (!STRIP_FELTER.has(k)) ud[k] = a[k]; return ud }
+function appMeta(m) { return { kilde_bog: m.kilde_bog, kapitel: m.kapitel, kapitel_titel: m.kapitel_titel, del: m.del, status: m.status, transformations_prompt_version: m.transformations_prompt_version } }
+
 const filer = findJsonFiler(SPLED_DATA)
 
 const kilder = []
@@ -86,7 +92,7 @@ for (const fil of filer) {
   const sk = Array.isArray(data.skills) ? data.skills : []
 
   for (const a of ve) {
-    alleVidensenheder.push({ ...a, _kilde_fil: relSti, _meta_status: meta.status || 'ukendt' })
+    alleVidensenheder.push({ ...appSikker(a), _kilde_fil: relSti, _meta_status: meta.status || 'ukendt' })
   }
   for (const s of sk) {
     alleSkills.push({ ...s, _kilde_fil: relSti, _meta_status: meta.status || 'ukendt' })
@@ -94,7 +100,7 @@ for (const fil of filer) {
 
   kilder.push({
     fil: relSti,
-    meta,
+    meta: appMeta(meta),
     status: meta.status || 'ukendt',
     antal_vidensenheder: ve.length,
     antal_skills: sk.length,

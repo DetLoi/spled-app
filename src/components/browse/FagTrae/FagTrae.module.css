@@ -1,0 +1,140 @@
+/* FagTrae — drill-down accordion. Kun eksisterende tokens. */
+.træ {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+
+.fagBlok {
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+  overflow: hidden;
+}
+
+/* Fælles knap-grundform for fag- og kapitel-hoveder. */
+.fagHoved,
+.kapHoved {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  padding: var(--spacing-m);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+.fagHoved:active,
+.kapHoved:active { background: var(--baggrund); }
+
+.fagNavn {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+}
+
+.kapListe {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.kapBlok {
+  border-bottom: 1px solid var(--border);
+}
+.kapBlok:last-child { border-bottom: none; }
+
+.kapHoved {
+  padding-left: var(--spacing-l);
+}
+
+.kapNavn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+}
+
+/* Lille kapitel-nummer-badge. */
+.kapNr {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: var(--baggrund);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  font-size: var(--font-size-s);
+  font-variant-numeric: tabular-nums;
+  color: var(--tekst-sekundaer);
+}
+
+.emneListe {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-s);
+  background: var(--baggrund);
+}
+
+.heleKapitlet {
+  margin: var(--spacing-xs) var(--spacing-s) var(--spacing-s);
+  padding: var(--spacing-s) var(--spacing-m);
+  background: var(--topbar-mork);
+  color: var(--topbar-tekst);
+  border: none;
+  border-radius: 12px;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  text-align: center;
+}
+.heleKapitlet:active { opacity: 0.85; }
+
+.emneRække {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-m);
+  padding: var(--spacing-s) var(--spacing-m);
+  margin: 0 var(--spacing-s);
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+.emneRække:active { background: var(--hvid); }
+
+.emneNavn {
+  flex: 1;
+  min-width: 0;
+}
+
+.tæller {
+  flex-shrink: 0;
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  font-variant-numeric: tabular-nums;
+}
+
+.pil {
+  flex-shrink: 0;
+  color: var(--tekst-sekundaer);
+  transition: transform var(--transition-fast);
+}
+.pilÅben {
+  transform: rotate(90deg);
+}

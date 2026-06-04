@@ -1,0 +1,56 @@
+/* TemaLinser — kun eksisterende tokens. */
+.blok {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+
+.chipsRække {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px var(--spacing-m);
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--chip-radius);
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.chip:active { background: var(--baggrund); }
+.chip:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Linse-chips markeres lidt kraftigere så de skiller sig fra tema-chips. */
+.linseChip {
+  background: var(--baggrund);
+  font-weight: var(--font-weight-medium);
+}
+
+.tegn {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+}
+
+.chipTal {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  font-variant-numeric: tabular-nums;
+}
+
+.visAlle {
+  padding: 6px var(--spacing-m);
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: var(--chip-radius);
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  cursor: pointer;
+}
+.visAlle:active { background: var(--baggrund); }

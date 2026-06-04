@@ -1,0 +1,44 @@
+/* SearchBar — bruger kun eksisterende tokens fra variables.css. */
+.felt {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+  padding: 0 var(--spacing-m);
+  height: 48px;
+}
+
+.ikon {
+  flex-shrink: 0;
+  color: var(--tekst-sekundaer);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  /* fjern browserens indbyggede search-cancel-kryds; vi har vores eget */
+  appearance: none;
+}
+.input::-webkit-search-cancel-button { display: none; }
+
+.ryd {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: var(--baggrund);
+  border-radius: 50%;
+  color: var(--tekst-sekundaer);
+  cursor: pointer;
+}
+.ryd:active { background: var(--border); }

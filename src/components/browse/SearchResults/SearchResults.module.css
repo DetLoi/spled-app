@@ -1,0 +1,51 @@
+/* SearchResults — kun eksisterende tokens. */
+.liste {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+  padding: calc(var(--spacing-xs) + 4px) var(--spacing-xs);
+}
+
+.antal {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  margin: 0;
+  padding: var(--spacing-xs) var(--spacing-m);
+}
+
+.række {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-s) var(--spacing-m);
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.række:active { background: var(--baggrund); }
+
+.begreb {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-primaer);
+}
+
+.sti {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+}
+
+.tom,
+.flere {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  margin: 0;
+  padding: var(--spacing-m);
+  text-align: center;
+}

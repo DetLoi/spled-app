@@ -235,6 +235,7 @@ export default function FeedPage({ filterAaben, setFilterAaben, setAktivtFag }) 
         : `${valgt?.label ?? 'Valgt'} niveau er ikke udfyldt for dette kort endnu.\n\n${kort.bagside}`
     return {
       ...kort,
+      _niveau: aktivNiveau,
       forside: kort.spørgsmål || kort.forside,
       bagside: niveauSvar || fallbackSvar,
     }
