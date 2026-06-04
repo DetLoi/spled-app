@@ -1,7 +1,7 @@
 // Bottom-sheet der viser et atoms forudsætninger og relationer — stort set
 // samme drag/luk-mekanik som KildePanel, så de to føles ens at bruge.
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { hentKortById } from '../../hooks/useFlashcards.jsx'
+import { hentKortById } from '../../lib/kortData.js'
 import styles from './ForbindelserPanel.module.css'
 
 export default function ForbindelserPanel({ kort, onLuk, onVaelgKort }) {

@@ -1,82 +1,8 @@
-// Selve kortet: forside (spørgsmål) / bagside (svar) med flip-animation
+// Selve kortet: forside (spørgsmål) / bagside (svar) med flip-animation.
 import { useEffect, useRef, useState } from 'react'
-import DummyBadge from '../DummyBadge/DummyBadge.jsx'
 import styles from './Flashcard.module.css'
 import { sendFeedback, getVote } from '../../lib/feedback.js'
-
-// Lille markdown-renderer der dækker mønstrene vi faktisk har i svar_faglig:
-// **bold**, *italic*, bulleted lister (- / *), nummererede lister (1.) og
-// afsnit adskilt af tomme linjer. Bevidst minimal — vi vil ikke trække en
-// hel parser ind for så lille et udsnit.
-function rendererInline(tekst, nøglePræfiks) {
-  const stykker = []
-  const regex = /(\*\*[^*]+\*\*|\*[^*\n]+\*)/g
-  let sidstePos = 0
-  let m
-  while ((m = regex.exec(tekst)) !== null) {
-    if (m.index > sidstePos) {
-      stykker.push(tekst.slice(sidstePos, m.index))
-    }
-    const t = m[0]
-    if (t.startsWith('**')) {
-      stykker.push(
-        <strong key={`${nøglePræfiks}-b-${m.index}`}>{t.slice(2, -2)}</strong>,
-      )
-    } else {
-      stykker.push(
-        <em key={`${nøglePræfiks}-i-${m.index}`}>{t.slice(1, -1)}</em>,
-      )
-    }
-    sidstePos = regex.lastIndex
-  }
-  if (sidstePos < tekst.length) {
-    stykker.push(tekst.slice(sidstePos))
-  }
-  return stykker
-}
-
-function rendererMarkdown(tekst) {
-  if (!tekst) return null
-  const blokke = tekst.split(/\n{2,}/)
-  return blokke.map((blok, bi) => {
-    const linjer = blok.split('\n').map((l) => l.trimEnd())
-    const ikkeTomme = linjer.filter((l) => l.trim() !== '')
-
-    // Bullet-liste hvis alle ikke-tomme linjer starter med "- " eller "* "
-    if (ikkeTomme.length > 0 && ikkeTomme.every((l) => /^\s*[-*]\s/.test(l))) {
-      return (
-        <ul key={`ul-${bi}`}>
-          {ikkeTomme.map((l, li) => (
-            <li key={li}>
-              {rendererInline(l.replace(/^\s*[-*]\s+/, ''), `${bi}-${li}`)}
-            </li>
-          ))}
-        </ul>
-      )
-    }
-
-    // Nummereret liste hvis alle ikke-tomme linjer starter med "1. ", "2. " osv.
-    if (ikkeTomme.length > 0 && ikkeTomme.every((l) => /^\s*\d+\.\s/.test(l))) {
-      return (
-        <ol key={`ol-${bi}`}>
-          {ikkeTomme.map((l, li) => (
-            <li key={li}>
-              {rendererInline(l.replace(/^\s*\d+\.\s+/, ''), `${bi}-${li}`)}
-            </li>
-          ))}
-        </ol>
-      )
-    }
-
-    // Almindeligt afsnit — bevar single line breaks som <br/>.
-    const børn = []
-    linjer.forEach((linje, li) => {
-      if (li > 0) børn.push(<br key={`br-${bi}-${li}`} />)
-      børn.push(...rendererInline(linje, `${bi}-${li}`))
-    })
-    return <p key={`p-${bi}`}>{børn}</p>
-  })
-}
+import { rendererMarkdown } from '../../lib/miniMarkdown.jsx'
 
 const FAG_KLASSER = {
   farmakologi: styles.farmakologi,
@@ -87,13 +13,7 @@ const FAG_KLASSER = {
 
 function FlipIkon() {
   return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M3 7h13a4 4 0 0 1 4 4M3 7l4-4M3 7l4 4M21 17H8a4 4 0 0 1-4-4M21 17l-4 4M21 17l-4-4"
         stroke="currentColor"
@@ -112,18 +32,22 @@ export default function Flashcard({ kort }) {
   const [stemme, setStemme] = useState(() => getVote(kort.id))
   const [kommentarAaben, setKommentarAaben] = useState(false)
   const [kommentar, setKommentar] = useState('')
+  const [bekraeftet, setBekraeftet] = useState(false) // viser kort "Sendt ✓" efter en stemme
   const afventerNedRef = useRef(false) // en 👎 der venter på at blive sendt (m/u kommentar)
   const kommentarRef = useRef('')      // seneste kommentar-tekst (til unmount-sikkerhed)
+  const bekraeftTimer = useRef(null)
   const kortRef = useRef(kort)
   useEffect(() => { kortRef.current = kort })
   const transitionTimeouts = useRef({ ud: null, ind: null })
 
   const fagKlasse = FAG_KLASSER[kort.fag] || ''
 
+  /* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps -- bevidste flip-animations- og sync-til-prop-effekter */
   useEffect(() => {
     return () => {
       if (transitionTimeouts.current.ud) clearTimeout(transitionTimeouts.current.ud)
       if (transitionTimeouts.current.ind) clearTimeout(transitionTimeouts.current.ind)
+      if (bekraeftTimer.current) clearTimeout(bekraeftTimer.current)
     }
   }, [])
 
@@ -150,6 +74,7 @@ export default function Flashcard({ kort }) {
   }, [kort.id])
 
   useEffect(() => { setStemme(getVote(kort.id)) }, [kort.id])
+  /* eslint-enable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
 
   // Hvis kortet forlades mens en 👎 venter (popup åben, ikke afsluttet), så send
   // stemmen alligevel — så et nedadtryk aldrig går tabt.
@@ -163,8 +88,16 @@ export default function Flashcard({ kort }) {
     }
   }, [])
 
+  // Vis en kort, diskret "Sendt ✓"-bekræftelse.
+  function visBekraeftet() {
+    setBekraeftet(true)
+    if (bekraeftTimer.current) clearTimeout(bekraeftTimer.current)
+    bekraeftTimer.current = setTimeout(() => setBekraeftet(false), 1600)
+  }
+
   function sendStemme(vote, komm = '') {
     sendFeedback({ atomId: kort.id, niveau: kort._niveau || 'faglig', vote, kommentar: komm, begreb: kort.begreb || kort.emne || '', fag: kort.fag || '' })
+    visBekraeftet()
   }
 
   function haandterStemme(e, vote) {
@@ -203,6 +136,8 @@ export default function Flashcard({ kort }) {
 
   return (
     <div className={styles.wrapper}>
+      {/* Diskret skærmlæser-besked om hvilken side der vises. */}
+      <span className={styles.srOnly} aria-live="polite">{vendt ? 'Viser svar' : 'Viser spørgsmål'}</span>
       <div
         className={`${styles.flipContainer} ${fagKlasse} ${vendt ? styles.vendt : ''}`}
         onClick={haandterFlip}
@@ -215,7 +150,6 @@ export default function Flashcard({ kort }) {
         <div className={`${styles.side} ${styles.forside}`}>
           <header className={styles.kortHoved}>
             <div className={styles.metaHoejre}>
-              {kort.dummy && <DummyBadge />}
               <span className={styles.labelOutline}>Spørgsmål</span>
             </div>
             <div className={styles.metaVenstre}>
@@ -240,7 +174,6 @@ export default function Flashcard({ kort }) {
         <div className={`${styles.side} ${styles.bagside}`}>
           <header className={styles.kortHoved}>
             <div className={styles.metaHoejre}>
-              {kort.dummy && <DummyBadge />}
               <span className={styles.labelFyldt}>Svar</span>
             </div>
             <div className={styles.metaVenstre}>
@@ -268,7 +201,11 @@ export default function Flashcard({ kort }) {
               Tap for spørgsmål
             </span>
             <div className={styles.feedback} onClick={(e) => e.stopPropagation()}>
-              <span className={styles.feedbackLabel}>Nyttigt?</span>
+              {bekraeftet ? (
+                <span className={styles.fbSendt} role="status">Sendt ✓</span>
+              ) : (
+                <span className={styles.feedbackLabel}>Nyttigt?</span>
+              )}
               <button type="button" aria-label="Nyttigt" aria-pressed={stemme === 'up'}
                 className={`${styles.fbKnap} ${stemme === 'up' ? styles.fbOp : ''}`}
                 onClick={(e) => haandterStemme(e, 'up')}>👍</button>

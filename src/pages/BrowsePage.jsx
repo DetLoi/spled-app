@@ -8,7 +8,8 @@
 // → den enkelte komponent; forkert navigation → startSession-helperne herunder.
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { hentAlleKort, useFilter } from '../hooks/useFlashcards.jsx'
+import { hentAlleKort } from '../lib/kortData.js'
+import { useFilter } from '../context/FilterContext.jsx'
 import {
   byggFagTræ, byggTemaer, tælLinser, søg, sortérPædagogisk,
 } from '../lib/browseData.js'

@@ -1,7 +1,7 @@
 // Router setup — kun routes og context-provider. Ingen anden logik.
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { FilterProvider } from './hooks/useFlashcards.jsx'
+import { FilterProvider } from './context/FilterContext.jsx'
 import FeedPage from './pages/FeedPage.jsx'
 import BrowsePage from './pages/BrowsePage.jsx'
 import SamlingPage from './pages/SamlingPage.jsx'

@@ -24,7 +24,7 @@ function findSpledData() {
   return kandidater[0]
 }
 const SPLED_DATA = findSpledData()
-const OUTPUT = join(APP_ROD, 'src', 'data', 'database.json')
+const OUTPUT = join(APP_ROD, 'public', 'database.json')
 
 function findJsonFiler(mappe) {
   const fundet = []

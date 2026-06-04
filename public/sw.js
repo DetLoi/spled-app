@@ -1,7 +1,7 @@
 // Minimal service worker — gør SplEd installerbar og brugbar offline.
 // Strategi: cache-first for statiske assets, network-first for navigation
 // (så ny build hentes når der er net), med offline-fallback til cachet index.
-const CACHE = 'spled-v1';
+const CACHE = 'spled-v2';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
@@ -19,6 +19,22 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const { request } = e;
   if (request.method !== 'GET' || new URL(request.url).origin !== location.origin) return;
+
+  // Datafil: network-first → frisk data når der er net, cachet kopi offline.
+  if (new URL(request.url).pathname.endsWith('/database.json')) {
+    e.respondWith(
+      fetch(request)
+        .then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
 
   // Navigationer: network-first → fald tilbage til cachet index ved offline.
   if (request.mode === 'navigate') {

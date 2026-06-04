@@ -1,7 +1,8 @@
 // Session-sheet: semesterfilter + navigator (fag→kapitel→emne→kort) for den
 // AKTUELLE session. Et tryk på et kort springer feedet derhen (ingen genstart).
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useFilter, useFlashcards } from '../../hooks/useFlashcards.jsx'
+import { useFilter } from '../../context/FilterContext.jsx'
+import { useFlashcards } from '../../hooks/useFlashcards.jsx'
 import SessionNavigator from '../SessionNavigator/SessionNavigator.jsx'
 import styles from './FilterSheet.module.css'
 

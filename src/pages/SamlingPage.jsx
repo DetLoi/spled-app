@@ -8,7 +8,8 @@
 // eller browseData; forkert udseende → SamlingPage.module.css.
 import { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { hentAlleKort, useFilter } from '../hooks/useFlashcards.jsx'
+import { hentAlleKort } from '../lib/kortData.js'
+import { useFilter } from '../context/FilterContext.jsx'
 import { gruppérEfterEmne, linsePredikat, linseLabel, sortérPædagogisk } from '../lib/browseData.js'
 import styles from './SamlingPage.module.css'
 
