@@ -110,6 +110,12 @@ export default function Flashcard({ kort }) {
   const [vistBagside, setVistBagside] = useState(kort.bagside)
   const [svarTransition, setSvarTransition] = useState('')
   const [stemme, setStemme] = useState(() => getVote(kort.id))
+  const [kommentarAaben, setKommentarAaben] = useState(false)
+  const [kommentar, setKommentar] = useState('')
+  const afventerNedRef = useRef(false) // en 👎 der venter på at blive sendt (m/u kommentar)
+  const kommentarRef = useRef('')      // seneste kommentar-tekst (til unmount-sikkerhed)
+  const kortRef = useRef(kort)
+  useEffect(() => { kortRef.current = kort })
   const transitionTimeouts = useRef({ ud: null, ind: null })
 
   const fagKlasse = FAG_KLASSER[kort.fag] || ''
@@ -145,11 +151,50 @@ export default function Flashcard({ kort }) {
 
   useEffect(() => { setStemme(getVote(kort.id)) }, [kort.id])
 
+  // Hvis kortet forlades mens en 👎 venter (popup åben, ikke afsluttet), så send
+  // stemmen alligevel — så et nedadtryk aldrig går tabt.
+  useEffect(() => {
+    return () => {
+      if (afventerNedRef.current) {
+        const k = kortRef.current
+        sendFeedback({ atomId: k.id, niveau: k._niveau || 'faglig', vote: 'down', kommentar: kommentarRef.current.trim(), begreb: k.begreb || k.emne || '', fag: k.fag || '' })
+        afventerNedRef.current = false
+      }
+    }
+  }, [])
+
+  function sendStemme(vote, komm = '') {
+    sendFeedback({ atomId: kort.id, niveau: kort._niveau || 'faglig', vote, kommentar: komm, begreb: kort.begreb || kort.emne || '', fag: kort.fag || '' })
+  }
+
   function haandterStemme(e, vote) {
     e.stopPropagation()
     const ny = stemme === vote ? null : vote
     setStemme(ny)
-    if (ny) sendFeedback({ atomId: kort.id, niveau: kort._niveau || 'faglig', vote: ny, begreb: kort.begreb || kort.emne || '', fag: kort.fag || '' })
+    if (ny === 'up') {
+      afventerNedRef.current = false
+      setKommentarAaben(false)
+      sendStemme('up')
+    } else if (ny === 'down') {
+      // Åbn kommentar-popup. Selve 👎 sendes når popup'en lukkes (eller ved unmount).
+      afventerNedRef.current = true
+      setKommentar('')
+      kommentarRef.current = ''
+      setKommentarAaben(true)
+    } else {
+      // Togglet fra igen før afsendelse.
+      afventerNedRef.current = false
+      setKommentarAaben(false)
+    }
+  }
+
+  // Luk popup og afslut den ventende 👎 (med eller uden kommentar).
+  function afslutKommentar(medTekst) {
+    if (afventerNedRef.current) {
+      sendStemme('down', medTekst ? kommentarRef.current.trim() : '')
+      afventerNedRef.current = false
+    }
+    setKommentarAaben(false)
   }
 
   function haandterFlip() {
@@ -232,6 +277,27 @@ export default function Flashcard({ kort }) {
                 onClick={(e) => haandterStemme(e, 'down')}>👎</button>
             </div>
           </footer>
+
+          {kommentarAaben && (
+            <div className={styles.kommentarOverlay} onClick={(e) => { e.stopPropagation(); afslutKommentar(false) }}>
+              <div className={styles.kommentarPanel} onClick={(e) => e.stopPropagation()}>
+                <p className={styles.kommentarTitel}>Hvad var galt? <span className={styles.kommentarValgfri}>(valgfrit)</span></p>
+                <textarea
+                  className={styles.kommentarFelt}
+                  value={kommentar}
+                  onChange={(e) => { setKommentar(e.target.value); kommentarRef.current = e.target.value }}
+                  placeholder="Fx forkert, uklart, eller mangler noget…"
+                  rows={3}
+                  autoFocus
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div className={styles.kommentarKnapper}>
+                  <button type="button" className={styles.kommentarSpring} onClick={(e) => { e.stopPropagation(); afslutKommentar(false) }}>Spring over</button>
+                  <button type="button" className={styles.kommentarSend} onClick={(e) => { e.stopPropagation(); afslutKommentar(true) }}>Send</button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

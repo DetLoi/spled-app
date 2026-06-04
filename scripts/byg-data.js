@@ -48,8 +48,15 @@ function findJsonFiler(mappe) {
 }
 
 if (!existsSync(SPLED_DATA)) {
-  console.error(`Fejl: kunne ikke finde spled-data på: ${SPLED_DATA}`)
-  console.error('Tip: sæt SPLED_DATA-miljøvariablen til den korrekte sti.')
+  // Ingen spled-data tilstede (fx hos en frontend-udvikler der KUN har spled-app).
+  // Hvis der allerede ligger en bygget database.json, så brug den og fortsæt — så
+  // `npm run dev`/`build` virker uden adgang til datakilden (spled-data forbliver privat).
+  if (existsSync(OUTPUT)) {
+    console.log('\u2139 spled-data ikke fundet \u2014 bruger den allerede byggede database.json (ingen regenerering).')
+    process.exit(0)
+  }
+  console.error(`Fejl: kunne ikke finde spled-data p\u00e5: ${SPLED_DATA}, og der er ingen eksisterende database.json.`)
+  console.error('Tip: s\u00e6t SPLED_DATA-milj\u00f8variablen, eller hav en bygget database.json i src/data/.')
   process.exit(1)
 }
 

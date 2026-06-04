@@ -310,3 +310,82 @@
 .fbKnap:active { transform: scale(0.9); }
 .fbOp { background: rgba(76, 175, 80, 0.15); border-color: var(--accent-organisation); }
 .fbNed { background: rgba(255, 59, 48, 0.13); border-color: var(--dummy-roed); }
+
+/* === Kommentar-popup ved 👎 === */
+.kommentarOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: inherit;
+  padding: var(--spacing-m);
+  box-sizing: border-box;
+}
+
+.kommentarPanel {
+  width: 100%;
+  background: var(--hvid);
+  border-radius: var(--kort-radius);
+  padding: var(--spacing-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+.kommentarTitel {
+  margin: 0;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+}
+
+.kommentarValgfri {
+  font-weight: var(--font-weight-normal);
+  color: var(--tekst-sekundaer);
+  font-size: var(--font-size-s);
+}
+
+.kommentarFelt {
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  background: var(--baggrund);
+  outline: none;
+}
+
+.kommentarKnapper {
+  display: flex;
+  gap: var(--spacing-s);
+  justify-content: flex-end;
+}
+
+.kommentarSpring,
+.kommentarSend {
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border: none;
+}
+
+.kommentarSpring {
+  background: var(--baggrund);
+  color: var(--tekst-sekundaer);
+  border: 1px solid var(--border);
+}
+
+.kommentarSend {
+  background: var(--topbar-mork);
+  color: var(--topbar-tekst);
+}
