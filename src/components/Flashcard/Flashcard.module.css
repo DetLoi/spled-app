@@ -1,0 +1,279 @@
+/* Flashcard — forside/bagside med flip-animation */
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0;
+}
+
+/* Fag-baggrundsfarver på kort-fladerne (pastelfarver) */
+.farmakologi .side  { background: var(--fag-farmakologi); }
+.sygepleje .side    { background: var(--fag-sygepleje); }
+.sygdomslaere .side { background: var(--fag-sygdomslaere); }
+.organisation .side { background: var(--fag-organisation); }
+
+/* Fag-accentfarver eksponeret som CSS-variabel for labels, streger, citater */
+.farmakologi  { --fag-accent: var(--accent-farmakologi); }
+.sygepleje    { --fag-accent: var(--accent-sygepleje); }
+.sygdomslaere { --fag-accent: var(--accent-sygdomslaere); }
+.organisation { --fag-accent: var(--accent-organisation); }
+
+/* Flip-container — perspektiv nødvendigt for 3D-effekt */
+.flipContainer {
+  width: calc(100% - 32px);
+  max-width: 480px;
+  height: calc(100dvh - 172px);
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flipContainer.vendt {
+  transform: rotateY(180deg);
+}
+
+/* Begge sider deler base-styles */
+.side {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--hvid);
+  border-radius: var(--kort-radius);
+  padding: var(--spacing-l);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bagside {
+  transform: rotateY(180deg);
+}
+
+/* === Kort-hoved: emne + label === */
+.kortHoved {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--spacing-m);
+  margin-bottom: var(--spacing-l);
+  flex-shrink: 0;
+}
+
+.metaVenstre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.emne {
+  font-size: 11px;
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-sekundaer);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.metaHoejre {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* "Spørgsmål"-label: outline-style i fag-accent */
+.labelOutline {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--chip-radius);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--fag-accent, var(--tekst-sekundaer));
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--fag-accent, var(--border));
+}
+
+/* "Svar"-label: fyldt med fag-accent */
+.labelFyldt {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--chip-radius);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--hvid);
+  background: var(--fag-accent, var(--tekst-sekundaer));
+}
+
+/* === Citat-blok øverst på bagsiden (viser spørgsmålet) === */
+.citat {
+  position: relative;
+  padding: var(--spacing-s) var(--spacing-m);
+  background: rgba(255, 255, 255, 0.55);
+  border-left: 3px solid var(--fag-accent, var(--border));
+  border-radius: 8px;
+  margin-bottom: var(--spacing-l);
+  flex-shrink: 0;
+}
+
+.citatLabel {
+  display: block;
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  color: var(--fag-accent, var(--tekst-sekundaer));
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+}
+
+.citatTekst {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* === Indhold (spørgsmåls-/svar-tekst) === */
+.indhold {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.accentStreg {
+  display: block;
+  width: 36px;
+  height: 3px;
+  background: var(--fag-accent, var(--tekst-sekundaer));
+  border-radius: 2px;
+  margin-bottom: var(--spacing-m);
+  flex-shrink: 0;
+}
+
+.spoergsmaalTekst {
+  font-size: 22px;
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-primaer);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.svarTekst {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-normal);
+  color: var(--tekst-primaer);
+  line-height: 1.55;
+}
+
+.svarTekst p {
+  margin: 0 0 var(--spacing-s);
+}
+
+.svarTekst p:last-child {
+  margin-bottom: 0;
+}
+
+.svarTekstUd {
+  animation: svarFadeUd 150ms ease both;
+}
+
+.svarTekstInd {
+  animation: svarFadeInd 180ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes svarFadeUd {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes svarFadeInd {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svarTekstUd,
+  .svarTekstInd {
+    animation: none;
+  }
+}
+
+.svarTekst strong {
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+}
+
+.svarTekst em {
+  font-style: italic;
+  color: var(--tekst-sekundaer);
+}
+
+.svarTekst ul,
+.svarTekst ol {
+  margin: 0 0 var(--spacing-s);
+  padding-left: var(--spacing-l);
+}
+
+.svarTekst ul:last-child,
+.svarTekst ol:last-child {
+  margin-bottom: 0;
+}
+
+.svarTekst li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.svarTekst li:last-child {
+  margin-bottom: 0;
+}
+
+/* === Fod med tap-hint === */
+.kortFod {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--spacing-m);
+  padding-top: var(--spacing-m);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  font-weight: var(--font-weight-medium);
+}

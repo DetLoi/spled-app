@@ -1,0 +1,339 @@
+/* BrowsePage — bygget UDELUKKENDE på eksisterende CSS-variabler fra
+   src/styles/variables.css. Ingen nye farver, radii, font-sizes eller
+   skygger. Hvis et nyt visuelt behov opstår, find en eksisterende variabel
+   der passer. */
+
+/* html/body/#root er overflow:hidden globalt (pga. swipe-mekanikken i
+   FeedPage), så BrowsePage må scrolle inden i sin egen container. */
+.side {
+  height: 100dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--baggrund);
+  padding: var(--spacing-l) var(--spacing-m) calc(var(--spacing-xl) * 2);
+  box-sizing: border-box;
+}
+
+.indhold {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* App-titel øverst — bruger samme font-størrelse som var afsat til xl. */
+.appHoved {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 var(--spacing-xs);
+}
+
+.appTitel {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.appUndertitel {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+}
+
+.sektion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+
+.sektionTitel {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-sekundaer);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 0;
+  padding: 0 var(--spacing-xs);
+}
+
+/* === Hurtig session === */
+
+.hurtigKort {
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+  padding: var(--spacing-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+
+.hurtigTopRække {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-m);
+}
+
+.hurtigTekst {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.hurtigOverskrift {
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+  margin: 0;
+}
+
+.hurtigBeskrivelse {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.hurtigToggleKnap {
+  flex-shrink: 0;
+  background: var(--topbar-mork);
+  color: var(--topbar-tekst);
+  border: none;
+  border-radius: var(--kort-radius);
+  padding: var(--spacing-s) var(--spacing-m);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.hurtigToggleKnap:active {
+  opacity: 0.85;
+}
+
+.pickerFelt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+
+.pickerLabel {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-sekundaer);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.chipsRække {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s);
+}
+
+.chip {
+  padding: 6px var(--spacing-m);
+  background: var(--baggrund);
+  border: 1px solid var(--border);
+  border-radius: var(--chip-radius);
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.chipAktiv {
+  background: var(--topbar-mork);
+  color: var(--topbar-tekst);
+  border-color: var(--topbar-mork);
+}
+
+.emneListe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  max-height: 220px;
+  overflow-y: auto;
+  padding: var(--spacing-xs);
+  background: var(--baggrund);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+}
+
+.emneRække {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  padding: 6px var(--spacing-s);
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background var(--transition-fast);
+}
+
+.emneRække:active {
+  background: var(--border);
+}
+
+.emneCheckbox {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--tekst-primaer);
+  cursor: pointer;
+}
+
+.emneNavn {
+  flex: 1;
+  min-width: 0;
+}
+
+.emneTæller {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  font-variant-numeric: tabular-nums;
+}
+
+.toggleRække {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  cursor: pointer;
+}
+
+.startKnap {
+  margin-top: var(--spacing-s);
+  width: 100%;
+  padding: 14px;
+  background: var(--topbar-mork);
+  color: var(--topbar-tekst);
+  border: none;
+  border-radius: var(--kort-radius);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.startKnap:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.startKnap:not(:disabled):active {
+  opacity: 0.85;
+}
+
+/* === Foreslåede pakker === */
+
+.pakkerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-m);
+}
+
+.pakkeKort {
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+  padding: var(--spacing-l);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.pakkeKort:active {
+  background: var(--baggrund);
+}
+
+.pakkeKortInaktiv {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pakkeNavn {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+}
+
+.pakkeBeskrivelse {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  line-height: 1.4;
+}
+
+.pakkeAntal {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  margin-top: auto;
+  padding-top: var(--spacing-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* === Bladr emne === */
+
+.emneBladrListe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+  padding: calc(var(--spacing-xs) + 4px) var(--spacing-xs);
+}
+
+.emneBladrRække {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-m);
+  padding: var(--spacing-s) var(--spacing-m);
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.emneBladrRække:active {
+  background: var(--baggrund);
+}
+
+.emneBladrNavn {
+  flex: 1;
+  min-width: 0;
+}
+
+.emneBladrTæller {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.emneBladrPil {
+  flex-shrink: 0;
+  color: var(--tekst-sekundaer);
+  display: flex;
+  align-items: center;
+}

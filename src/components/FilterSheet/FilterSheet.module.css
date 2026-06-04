@@ -1,0 +1,405 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 200;
+  animation: fadeIn 300ms ease both;
+}
+
+.sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 85vh;
+  overflow: hidden;
+  background: var(--hvid);
+  border-radius: var(--panel-radius);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-m) var(--spacing-l) 0;
+  animation: slideOp 380ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.haandtag {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: auto;
+  margin: 0 auto var(--spacing-m);
+  padding: 8px 18px;
+  box-sizing: content-box;
+  background: transparent;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.haandtag::before {
+  content: '';
+  width: 40px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.haandtag:active {
+  cursor: grabbing;
+}
+
+.sheetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-l);
+  flex-shrink: 0;
+}
+
+.titel {
+  margin: 0;
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+}
+
+.nulstilKnap {
+  padding: 6px 12px;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--accent-farmakologi);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.nulstilKnap:active {
+  opacity: 0.75;
+}
+
+.gruppeLabel {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-sekundaer);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 0 0 var(--spacing-s);
+  flex-shrink: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s);
+  margin-bottom: var(--spacing-l);
+  flex-shrink: 0;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: var(--chip-radius);
+  border: 1.5px solid var(--border);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-primaer);
+  background: var(--hvid);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chipAktiv {
+  background: var(--tekst-primaer);
+  color: var(--hvid);
+  border-color: var(--tekst-primaer);
+}
+
+.soegWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--baggrund);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: var(--spacing-l);
+  flex-shrink: 0;
+}
+
+.soegIkon {
+  margin-right: 8px;
+  font-size: 18px;
+  color: var(--tekst-sekundaer);
+  user-select: none;
+}
+
+.soegFelt {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  outline: none;
+  min-width: 0;
+}
+
+.soegFelt::placeholder {
+  color: var(--tekst-sekundaer);
+}
+
+.soegRyd {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  color: var(--tekst-sekundaer);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.soegRyd:active {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.soegInfo {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  margin: 0 0 var(--spacing-l);
+  flex-shrink: 0;
+}
+
+.soegFylder {
+  flex: 1;
+  min-height: 0;
+}
+
+.accordionListe {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Fag-sektion ─────────────────────────────────── */
+.fagSektion {
+  border-bottom: 1px solid var(--border);
+}
+
+.fagSektion:last-child {
+  border-bottom: none;
+}
+
+/* ── Fag-header knap ─────────────────────────────── */
+.fagHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fagHeader:active {
+  opacity: 0.7;
+}
+
+.fagHeaderVenstre {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Farvet dot per fag */
+.fagDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fagNavn {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-primaer);
+}
+
+.fagInaktiv {
+  color: var(--tekst-sekundaer);
+}
+
+/* Chevron SVG — roterer ved åben */
+.chevronIkon {
+  color: var(--tekst-sekundaer);
+  flex-shrink: 0;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chevronAaben {
+  transform: rotate(180deg);
+}
+
+/* ── Emne-liste ──────────────────────────────────── */
+.emneliste {
+  padding-bottom: var(--spacing-s);
+}
+
+/* Alle-toggle */
+.alleToggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 0 10px 2px;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-primaer);
+  cursor: pointer;
+  margin-bottom: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.alleToggle:active {
+  opacity: 0.7;
+}
+
+/* Emne-række */
+.emneRaekke {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 0 10px 2px;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.emneRaekke:active {
+  opacity: 0.7;
+}
+
+/* ── Checkboks ───────────────────────────────────── */
+.checkboks {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  flex-shrink: 0;
+  box-sizing: border-box;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.checkAktiv {
+  background: var(--tekst-primaer);
+  border-color: var(--tekst-primaer);
+  position: relative;
+}
+
+.checkAktiv::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 5px;
+  height: 9px;
+  border: 2px solid var(--hvid);
+  border-top: none;
+  border-left: none;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* ── Emne-navn ───────────────────────────────────── */
+.emneNavn {
+  font-size: var(--font-size-m);
+  color: var(--tekst-primaer);
+  line-height: 1.3;
+}
+
+.emneInaktiv {
+  color: var(--tekst-sekundaer);
+  text-decoration: line-through;
+  text-decoration-color: var(--border);
+}
+
+.visKortKnap {
+  position: static;
+  width: 100%;
+  margin-top: var(--spacing-m);
+  margin-bottom: var(--spacing-l);
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: var(--tekst-primaer);
+  color: var(--hvid);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.visKortKnap:active {
+  opacity: 0.88;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideOp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideNed {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fadeUd {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.sheetLukker {
+  animation: slideNed 300ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.overlayLukker {
+  animation: fadeUd 280ms ease both;
+}

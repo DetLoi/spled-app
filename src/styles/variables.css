@@ -1,0 +1,50 @@
+/* CSS custom properties — farver, spacing, typografi */
+:root {
+  /* Fag-baggrundsfarver */
+  --fag-farmakologi:    #E8F4FD;
+  --fag-sygepleje:      #FDF0E8;
+  --fag-sygdomslaere:   #F0EDF8;
+  --fag-organisation:   #EDF8F0;
+
+  /* Fag-accentfarver */
+  --accent-farmakologi:  #2196F3;
+  --accent-sygepleje:    #FF9800;
+  --accent-sygdomslaere: #9C27B0;
+  --accent-organisation: #4CAF50;
+
+  /* Generelle farver */
+  --dummy-roed:      #FF3B30;
+  --tekst-primaer:   #1A1A1A;
+  --tekst-sekundaer: #6B6B6B;
+  --baggrund:        #FAFAFA;
+  --hvid:            #FFFFFF;
+  --border:          #E0E0E0;
+  --topbar-mork:     rgba(20, 20, 20, 0.92);
+  --topbar-tekst:    #FFFFFF;
+
+  /* Shapes */
+  --kort-radius:     16px;
+  --chip-radius:     20px;
+  --panel-radius:    20px 20px 0 0;
+
+  /* Spacing */
+  --spacing-xs:  4px;
+  --spacing-s:   8px;
+  --spacing-m:   16px;
+  --spacing-l:   24px;
+  --spacing-xl:  32px;
+
+  /* Typography */
+  --font-size-s:   13px;
+  --font-size-m:   16px;
+  --font-size-l:   20px;
+  --font-size-xl:  26px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold:   700;
+
+  /* Transitions */
+  --transition-fast:   150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow:   400ms ease;
+}
