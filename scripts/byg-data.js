@@ -6,7 +6,7 @@
 // Mappestruktur (Windows): Dokumenter/spled/spled-app/  +  Dokumenter/spled-data/
 // → spled-data ligger som ../../spled-data set fra spled-app-roden.
 
-import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, existsSync, renameSync, unlinkSync } from 'fs'
 import { join, dirname, relative } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -119,8 +119,27 @@ const database = {
   skills: alleSkills,
 }
 
+// Atomisk + selv-validerende skrivning: skriv til en temp-fil, genlæs og bekræft
+// at den er gyldig JSON med det forventede antal atomer, og omdøb den så HENOVER
+// den rigtige fil. renameSync er atomisk → man kan ALDRIG ende med en halvskrevet
+// database.json (årsagen til de tidligere "gyldig prefix + gammel hale"-korruptioner).
 mkdirSync(dirname(OUTPUT), { recursive: true })
-writeFileSync(OUTPUT, JSON.stringify(database, null, 2), 'utf-8')
+const tmp = OUTPUT + '.tmp'
+writeFileSync(tmp, JSON.stringify(database, null, 2), 'utf-8')
+
+try {
+  const kontrol = JSON.parse(readFileSync(tmp, 'utf-8'))
+  if (kontrol.antal_vidensenheder !== alleVidensenheder.length) {
+    throw new Error(`forventede ${alleVidensenheder.length} vidensenheder, fandt ${kontrol.antal_vidensenheder}`)
+  }
+} catch (e) {
+  try { unlinkSync(tmp) } catch { /* ignorér */ }
+  console.error(`\u2717 AFVIST: ny database.json bestod ikke validering (${e.message}).`)
+  console.error('  Den eksisterende database.json er IKKE ændret.')
+  process.exit(1)
+}
+
+renameSync(tmp, OUTPUT)
 
 console.log('✓ database.json genereret')
 console.log(`  Kilder (filer):   ${kilder.length}`)
