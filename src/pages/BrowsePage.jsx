@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { hentAlleKort, useFilter } from '../hooks/useFlashcards.jsx'
 import {
-  byggFagTræ, byggTemaer, tælLinser, linsePredikat, søg, sortérPædagogisk,
+  byggFagTræ, byggTemaer, tælLinser, søg, sortérPædagogisk,
 } from '../lib/browseData.js'
 import SearchBar from '../components/browse/SearchBar/SearchBar.jsx'
 import SearchResults from '../components/browse/SearchResults/SearchResults.jsx'
@@ -53,14 +53,10 @@ export default function BrowsePage() {
     startSession(sortérPædagogisk(alleKort.filter((k) => k.emne === emne)).map((k) => k.id))
   const startKapitel = (kapitelRå) =>
     startSession(sortérPædagogisk(alleKort.filter((k) => k.kapitel === kapitelRå)).map((k) => k.id))
-  const startTema = (tema) =>
-    startSession(
-      sortérPædagogisk(alleKort.filter((k) => (k.tværgående_tema || []).includes(tema))).map((k) => k.id),
-    )
-  const startLinse = (id) => {
-    const passer = linsePredikat(id)
-    startSession(sortérPædagogisk(alleKort.filter(passer)).map((k) => k.id))
-  }
+  // "Udforsk på tværs": tema/linse går til en OVERSIGT først (SamlingPage),
+  // ikke direkte i gennemgangen — så man ser hvad samlingen indeholder.
+  const startTema = (tema) => navigate(`/samling/tema/${encodeURIComponent(tema)}`)
+  const startLinse = (id) => navigate(`/samling/linse/${encodeURIComponent(id)}`)
 
   return (
     <div className={styles.side}>

@@ -1,0 +1,154 @@
+/* SamlingPage — kun eksisterende tokens fra variables.css. Fast header +
+   scrollende indhold + fast bund-knap. */
+.side {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--baggrund);
+}
+
+.hoved {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  padding: var(--spacing-m);
+  background: var(--hvid);
+  border-bottom: 1px solid var(--border);
+}
+
+.tilbage {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--tekst-primaer);
+  cursor: pointer;
+}
+.tilbage:active { background: var(--baggrund); }
+
+.hovedTekst {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.titel {
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+  color: var(--tekst-primaer);
+  margin: 0;
+}
+
+.antal {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  font-variant-numeric: tabular-nums;
+}
+
+.indhold {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--spacing-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+}
+
+.gruppe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+
+.gruppeTitel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-s);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-sekundaer);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 0;
+  padding: 0 var(--spacing-xs);
+}
+
+.gruppeTal {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-weight-normal);
+}
+
+.kortListe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  background: var(--hvid);
+  border: 1px solid var(--border);
+  border-radius: var(--kort-radius);
+  padding: var(--spacing-xs);
+}
+
+.kortRække {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-s) var(--spacing-m);
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.kortRække:active { background: var(--baggrund); }
+
+.kortBegreb {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-primaer);
+}
+
+.kortSp {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  line-height: 1.35;
+}
+
+.bund {
+  flex-shrink: 0;
+  padding: var(--spacing-m);
+  background: var(--hvid);
+  border-top: 1px solid var(--border);
+}
+
+.startKnap {
+  width: 100%;
+  padding: 14px;
+  background: var(--topbar-mork);
+  color: var(--topbar-tekst);
+  border: none;
+  border-radius: var(--kort-radius);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+.startKnap:active { opacity: 0.85; }
+
+.tom {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tekst-sekundaer);
+  font-size: var(--font-size-m);
+}

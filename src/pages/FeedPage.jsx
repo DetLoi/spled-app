@@ -1,5 +1,6 @@
 // Swipe med drag-follow — emner lodret, kort vandret (Refs under bevægelse)
 import { useEffect, useRef, useLayoutEffect, useCallback, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useFlashcardsByEmne, useFilter } from '../hooks/useFlashcards.jsx'
 import Flashcard from '../components/Flashcard/Flashcard.jsx'
 import KildePanel from '../components/KildePanel/KildePanel.jsx'
@@ -34,6 +35,7 @@ function KortProgressBar({ antal, aktiv, emneNoegle }) {
 export default function FeedPage({ filterAaben, setFilterAaben, setAktivtFag }) {
   const grupperetKort = useFlashcardsByEmne()
   const { filterSleutel } = useFilter()
+  const location = useLocation()
   const [aktivKilde, setAktivKilde] = useState(null)
   const [forbindelserAaben, setForbindelserAaben] = useState(false)
   const [emneIndex, setEmneIndex] = useState(0)
@@ -47,6 +49,10 @@ export default function FeedPage({ filterAaben, setFilterAaben, setAktivtFag }) 
   const akselLas = useRef(null)
   const traekkerRef = useRef(false)
   const snapIgangRef = useRef(false)
+  // Mål-kortindex der skal anvendes EFTER et emneskift (så layout-effekten
+  // ikke nulstiller til 0). Og hvilket startId vi allerede har sprunget til.
+  const afventerKortIndex = useRef(null)
+  const startHaandteretRef = useRef(null)
 
   const aktivtKort = grupperetKort[emneIndex]?.kort?.[kortIndex] ?? null
 
@@ -67,8 +73,34 @@ export default function FeedPage({ filterAaben, setFilterAaben, setAktivtFag }) 
     setEmneIndex((i) => (nEmner === 0 ? 0 : Math.min(i, nEmner - 1)))
   }, [grupperetKort, nEmner])
 
+  // Når man kommer fra en samlings-oversigt og har trykket på ET bestemt kort,
+  // starter vi HELE samlingen, men lander på det valgte kort. startId bæres med
+  // i location.state. Hop kun én gang pr. startId.
+  useEffect(() => {
+    const startId = location.state?.startId
+    if (!startId || startHaandteretRef.current === startId || grupperetKort.length === 0) return
+    for (let ei = 0; ei < grupperetKort.length; ei++) {
+      const ki = grupperetKort[ei].kort.findIndex((k) => k.id === startId)
+      if (ki !== -1) {
+        startHaandteretRef.current = startId
+        if (ei === emneIndex) {
+          setKortIndex(ki)
+        } else {
+          afventerKortIndex.current = ki
+          setEmneIndex(ei)
+        }
+        break
+      }
+    }
+  }, [grupperetKort, location.state, emneIndex])
+
   useLayoutEffect(() => {
-    setKortIndex(0)
+    if (afventerKortIndex.current != null) {
+      setKortIndex(afventerKortIndex.current)
+      afventerKortIndex.current = null
+    } else {
+      setKortIndex(0)
+    }
   }, [emneIndex])
 
   const saetVertTransform = useCallback((dyPx) => {
@@ -251,8 +283,12 @@ export default function FeedPage({ filterAaben, setFilterAaben, setAktivtFag }) 
       const ki = gr.kort.findIndex((k) => k.id === id)
       if (ki !== -1) {
         setForbindelserAaben(false)
-        setEmneIndex(ei)
-        setKortIndex(ki)
+        if (ei === emneIndex) {
+          setKortIndex(ki)
+        } else {
+          afventerKortIndex.current = ki
+          setEmneIndex(ei)
+        }
         return
       }
     }

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { FilterProvider } from './hooks/useFlashcards.jsx'
 import FeedPage from './pages/FeedPage.jsx'
 import BrowsePage from './pages/BrowsePage.jsx'
+import SamlingPage from './pages/SamlingPage.jsx'
 import TopBar from './components/TopBar/TopBar.jsx'
 
 // Trukket ud i en indre komponent så vi kan kalde useLocation, der kræver
@@ -23,6 +24,7 @@ function AppInner() {
       )}
       <Routes>
         <Route path="/" element={<BrowsePage />} />
+        <Route path="/samling/:type/:vaerdi" element={<SamlingPage />} />
         <Route
           path="/session"
           element={

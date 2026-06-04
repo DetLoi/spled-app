@@ -193,3 +193,31 @@ export function sortérPædagogisk(kort) {
     return (a.pædagogisk_orden_i_emne ?? 9999) - (b.pædagogisk_orden_i_emne ?? 9999)
   })
 }
+
+// --- Gruppér et kort-udvalg efter emne (til samlings-oversigten) -------------
+// Returnerer [{ emne, kort[] }] i rækkefølge efter emnets første optræden, og
+// hvert emnes kort sorteret efter pædagogisk_orden_i_emne. Ren funktion.
+export function gruppérEfterEmne(kort) {
+  const grupper = []
+  const indeks = new Map()
+  for (const k of kort) {
+    const emne = k.emne || 'Uden emne'
+    let i = indeks.get(emne)
+    if (i === undefined) {
+      i = grupper.length
+      indeks.set(emne, i)
+      grupper.push({ emne, kort: [k] })
+    } else {
+      grupper[i].kort.push(k)
+    }
+  }
+  for (const g of grupper) {
+    g.kort.sort((a, b) => (a.pædagogisk_orden_i_emne ?? 9999) - (b.pædagogisk_orden_i_emne ?? 9999))
+  }
+  return grupper
+}
+
+// Vis-navn for en linse-id (fx 'kerne' → 'Kerne'). Bruges af samlings-oversigten.
+export function linseLabel(id) {
+  return (LINSER.find((l) => l.id === id) || {}).label || id
+}
