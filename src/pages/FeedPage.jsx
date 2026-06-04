@@ -426,7 +426,13 @@ export default function FeedPage({ filterAaben, setFilterAaben, setAktivtFag }) 
           onVaelgKort={gaaTilAtomId}
         />
       )}
-      {filterAaben && <FilterSheet onLuk={() => setFilterAaben(false)} />}
+      {filterAaben && (
+        <FilterSheet
+          onLuk={() => setFilterAaben(false)}
+          onGaaTil={gaaTilAtomId}
+          aktivId={aktivtKort?.id ?? null}
+        />
+      )}
     </div>
   )
 }

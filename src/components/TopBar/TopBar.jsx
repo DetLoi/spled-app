@@ -26,7 +26,7 @@ export default function TopBar({ onFilterClick, aktivtFag }) {
         onClick={haandterTilbage}
         aria-label="Gå tilbage"
       >
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
             d="M15 6l-6 6 6 6"
             stroke="currentColor"

@@ -1,0 +1,88 @@
+/* SessionNavigator — flad emne-grupperet liste, samme udtryk som SamlingPage-
+   indholdet. Kun eksisterende tokens. Scroll styres af FilterSheet (.navWrap). */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-l);
+  padding-bottom: var(--spacing-s);
+}
+
+.tom {
+  color: var(--tekst-sekundaer);
+  font-size: var(--font-size-m);
+  padding: var(--spacing-l) 0;
+  text-align: center;
+}
+
+.gruppe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.emneHoved {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-s);
+  margin: 0;
+  padding: 0 var(--spacing-xs);
+}
+
+.emneNavn {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-sekundaer);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.tæller {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  font-variant-numeric: tabular-nums;
+}
+
+.kortListe {
+  display: flex;
+  flex-direction: column;
+}
+
+.kortRække {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 10px var(--spacing-s);
+  border: none;
+  background: none;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--transition-fast);
+}
+.kortRække:active {
+  background: var(--baggrund);
+}
+
+.begreb {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  color: var(--tekst-primaer);
+  line-height: 1.3;
+}
+
+.sp {
+  font-size: var(--font-size-s);
+  color: var(--tekst-sekundaer);
+  line-height: 1.3;
+}
+
+/* Det kort feedet står på lige nu */
+.kortAktiv {
+  background: var(--baggrund);
+}
+.kortAktiv .begreb {
+  font-weight: var(--font-weight-bold);
+}

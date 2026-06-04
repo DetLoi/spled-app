@@ -403,3 +403,10 @@
 .overlayLukker {
   animation: fadeUd 280ms ease both;
 }
+
+.navWrap {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}

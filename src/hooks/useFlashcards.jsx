@@ -85,7 +85,7 @@ export function hentKortById(id) {
 const FilterContext = createContext(null)
 
 export function FilterProvider({ children }) {
-  const [semester, setSemester] = useState(3)
+  const [semester, setSemester] = useState('alle')
   const [soegning, setSoegning] = useState('')
   const [fravalgte, setFravalgte] = useState(() => new Set())
   // Session-udvalg fra BrowsePage. null = ingen aktiv session, vis alle kort.
@@ -115,7 +115,7 @@ export function FilterProvider({ children }) {
   }, [])
 
   const nulstil = useCallback(() => {
-    setSemester(3)
+    setSemester('alle')
     setSoegning('')
     setFravalgte(new Set())
   }, [])
@@ -171,11 +171,12 @@ export function useFilter() {
   return useContext(FilterContext)
 }
 
-// Atomer uden registreret semester (fx alle anatomi-atomer) lader vi passere
-// uanset semester-filter, så indholdet ikke pludselig forsvinder.
+// Semesterfilter: "Alle" viser alt, ellers EKSAKT match. Da intet atom endnu
+// har fået et semester ('ikke angivet'), vil et bestemt semester give 0 kort —
+// det er meningen. Filteret er klargjort, og virker i samme øjeblik atomer
+// tildeles et semester i spled-data.
 function passerSemester(kort, semester) {
   if (semester === 'alle') return true
-  if (kort.semester === 'ikke angivet') return true
   return kort.semester === semester
 }
 
